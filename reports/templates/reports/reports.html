@@ -1,0 +1,106 @@
+{% extends 'core/main.html' %}
+{% load static %}
+
+{% block titel %}Reportes{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'core/src/plugins/datatables/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'core/src/plugins/datatables/css/responsive.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="min-height-200px">
+	<!-- Simple Datatable start -->
+	<div class="card-box mb-30">
+		<div class="pd-20">
+			<div class="row">
+				<div class="col-md-6 col-sm-12">
+					<div class="title">
+						<h4>Reportes</h4>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-12 text-right">
+					<div class="dropdown">
+						<a id="anio_button" class="btn btn-primary dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+							Todos los años
+						</a>
+						<div class="dropdown-menu dropdown-menu-right">
+							<a class="dropdown-item" href="#" value=0>Todos los años</a>
+							<a class="dropdown-item" href="#" value=1>2021</a>
+							<a class="dropdown-item" href="#" value=2>2020</a>
+							<a class="dropdown-item" href="#" value=3>2019</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pb-20">
+			<table class="data-table table stripe hover nowrap" id="reportes">
+				<thead>
+					<tr>
+						<th>Referencia</th>
+						<th class="table-plus datatable-nosort">Reporte</th>
+						<th>Componente</th>
+						<th>Tipo</th>
+						<th>Fecha Inspección</th>
+						<th>Fecha Prox. Inspección</th>
+						<th class="datatable-nosort">Acción</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for report in reports %}
+					<tr>
+						<td>{{report.reference}}</td>
+						<td class="table-plus">{{report.name}}</td>
+						<td>{{report.component}}</td>
+						<td>{{report.report_type}}</td>
+						<td>{{report.inspection_date}}</td>
+						<td>{{report.next_inspection_date}}</td>
+						<td>
+							<div class="dropdown">
+								<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+									<i class="dw dw-more"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+									<!--<a class="dropdown-item" href="#"><i class="dw dw-eye"></i> Descargar</a>-->
+									<button id="btn_descarga" onclick="window.open('{% url 'download_report' report.pk %}')" class="dropdown-item"><i class="dw dw-eye"></i> Descargar</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	$('.dropdown-menu a').click(function(){
+	    var seleccion = $(this).attr('value')
+	    var columna = 4 // columna de fecha de inspeccion
+	    var anio = $(this).text()
+	    $('#anio_button').text($(this).text());
+	    // DataTable
+	    var table = $('#reportes').DataTable();
+	    if (seleccion == 0) {
+	    	anio = ''
+	    }
+	    table.column( columna )
+                    .search( anio )
+                    .draw();
+
+	});
+</script>
+<script src="{% static 'core/vendors/scripts/reports.js' %}"></script>
+<script src="{% static 'core/src/plugins/datatables/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'core/src/plugins/datatables/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'core/src/plugins/datatables/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'core/src/plugins/datatables/js/responsive.bootstrap4.min.js' %}"></script>
+<!-- Datatable Setting js -->
+<script src="{% static 'core/vendors/scripts/datatable-setting.js' %}"></script>
+<!-- buttons for Export datatable -->
+<script src="{% static 'core/src/plugins/datatables/js/dataTables.buttons.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block body %}
+<body class="sidebar-dark">
+	<div class="pre-loader">
+		<div class="pre-loader-box">
+			<div class="loader-logo"><img src="{% static 'core/src/images/Logo5.png' %}" alt=""></div>
+			<div class='loader-progress' id="progress_div">
+				<div class='bar' id='bar1'></div>
+			</div>
+			<div class='percent' id='percent1'>0%</div>
+			<div class="loading-text">
+				Cargando...
+			</div>
+		</div>
+	</div>
+
+	<div class="header">
+		<div class="header-left">
+			<div class="menu-icon dw dw-menu"></div>
+		</div>
+		<div class="header-right">
+			<div class="user-info-dropdown">
+				<div class="dropdown">
+					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+						<span class="user-name">{{ empresa }}</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+						<a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
+						<a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}"><i class="dw dw-logout"></i>Salir</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="left-side-bar">
+		<div class="brand-logo">
+			<a href="{% url 'home' %}">
+				<!--<img src="{% static 'core/vendors/images/deskapp-logo.svg' %}" alt="" class="dark-logo">-->
+				<img src="{% static 'core/src/images/Logo3.png' %}" alt="" class="light-logo">
+			</a>
+			<div class="close-sidebar" data-toggle="left-sidebar-close">
+				<i class="ion-close-round"></i>
+			</div>
+		</div>
+		<div class="menu-block customscroll">
+			<div class="sidebar-menu">
+				<ul id="accordion-menu">
+					<li>
+						<a href="{% url 'reports' %}" class="dropdown-toggle no-arrow">
+							<span class="micon dw dw-library"></span><span class="mtext">Reportes</span>
+						</a>
+					</li>
+					<li>
+						<div class="dropdown-divider"></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			{% block content %} {% endblock %}
+			<div class="footer-wrap pd-20 mb-20 card-box">
+				Todos los derechos reservados <a href="https://www.alfindu.com.co" target="_blank">Alfindu</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
